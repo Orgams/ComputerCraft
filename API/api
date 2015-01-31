@@ -1,0 +1,18 @@
+repApi = "API/"
+
+local function supExtention( nomFichierSansExt )
+    if fs.exists("API/"..nomFichierSansExt..".lua") then
+        if fs.exists("API/"..nomFichierSansExt) then
+            fs.delete("API/"..nomFichierSansExt)
+        end
+        fs.move("API/"..nomFichierSansExt..".lua","API/"..nomFichierSansExt)
+    end
+end
+
+function initisalisation( ... )
+    for i,cheminApi in ipairs(arg) do
+        supExtention(cheminApi)
+        os.loadAPI(repApi..cheminApi)
+    end
+end
+
