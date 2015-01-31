@@ -1,14 +1,16 @@
 os.loadAPI("API/api")
-api.initisalisation("log","move","bloc")
+api.initisalisation("log","move","bloc","inventaire")
 
 log.setNiveauLogFichier(log._niveau["debug"])
 log.setNomFichierLog("mineur.log")
 log.supFichier()
 
+inventaire.blocAGarder = {constante.bloc["coal"]}
+
 local _blocNonMine = {
-  ["Stone"] = constante.bloc["stone"],
-  ["Dirt"] = constante.bloc["dirt"],
-  ["Gravel"] = constante.bloc["gravel"]
+  constante.bloc["stone"],
+  constante.bloc["dirt"],
+  constante.bloc["gravel"]
 }
 
 local drapeauBedrock = false
@@ -22,7 +24,7 @@ function compare_mine()
   if not bloc.presance(_blocNonMine) then
     turtle.dig()
     if not inventaire.firstVide() then
-      inventaire.videInventaire()
+      inventaire.viderInventaire()
     end
   end
 
@@ -55,6 +57,7 @@ function NextPuit()
 end
 
 function main()
+  log.entreMethode("mineur.main()")
   print("tortue en attente")
   read()
 
@@ -84,5 +87,6 @@ function main()
 
   move.aller(move.getPositionDepart()) -- retour au point de départ
 
-  inventaire.videInventaire()
+  inventaire.viderInventaire()
+  log.sortieMethode()
 end

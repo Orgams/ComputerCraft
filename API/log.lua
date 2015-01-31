@@ -60,7 +60,7 @@ function warn(...)
 end
 
 function descrTortue()
-  return move.descrPosition()..";"..turtle.getFuelLevel()..";"..log.profondeur
+  return move.descrPosition()..";"..turtle.getFuelLevel()..";"..profondeur
 end
 
 function debug(...)

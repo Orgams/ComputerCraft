@@ -29,3 +29,15 @@ end
 function isTable(tab)
     return type(tab) == "table"
 end
+
+function clone(tab)
+    local res = {}
+    for k,v in pairs(tab) do
+        val = v
+        if isTable(v) then
+            val = clone(v)
+        end
+        res[k] = val;
+    end
+    return res
+end

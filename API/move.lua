@@ -23,10 +23,10 @@ local niveauFuelMini = 5
 local niveauCharbonMini = 5
 
 function getPositionDepart()
-   return positionDepart
+   return table.clone(positionDepart)
 end 
 function getPosition()
-   return position
+   return table.clone(position)
 end 
 
 function allerSurface()
@@ -94,21 +94,15 @@ function deplacementXZ(x,z)
   --nombre de déplacement en X et Z
   local nbX = math.abs(x - position["x"])
   local nbZ = math.abs(z - position["z"])
-  log.display(nbX," - ",nbZ)
 
   -- On commence par se déplacer en x
   if nbX ~= 0 then
-    log.display("il y a des deplacement a faire")
     if x > position["x"] then
-      log.display("se mettre vers l'avant")
       directionDevant()
     elseif x < position["x"] then
-      log.display("se mettre vers l'arriere")
       directionDeriere()
     end
-    log.display(nbX," : ",nbX > 0)
     while nbX > 0 do
-      log.display("avancer")
       avancer()
       nbX = nbX - 1
     end
@@ -132,7 +126,6 @@ end
 
 function direction(direction)
   log.entreMethode("direction(",direction,")")
-  log.display(position["direction"]," ~= ",direction)
   while position["direction"] ~= direction do
     tourneDroite()
   end

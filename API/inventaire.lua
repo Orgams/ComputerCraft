@@ -91,6 +91,7 @@ function nb(id)
     log.sortieMethode(res)
     return res
 end
+
 function ranger()
     log.entreMethode("ranger()")
 
@@ -145,7 +146,7 @@ end
 function viderInventaire()
     log.entreMethode("viderInventaire()")
     local positionTmp = move.getPosition()
-    move.retoure({["x"]=0,["y"]=0,["y"]=0})
+    move.retoure({["x"]=0,["z"]=0,["y"]=0})
     move.directionDeriere()
     for i=1,16 do
         turtle.select(i)
@@ -163,7 +164,7 @@ end
 function isAGarder(id)
     log.entreMethode("isAGarder()")
     local res = false
-    for k,v in pairs(_blocAGarder) do
+    for k,v in pairs(blocAGarder) do
         if id == v then
             res = true
         end
