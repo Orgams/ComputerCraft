@@ -1,14 +1,19 @@
 os.loadAPI("API/api")
-api.initisalisation("log","comm")
+api.initisalisation("log","comm","ecran")
 
 log.setNomFichierLog("central.csv")
 log.supFichier()
 
-comm.connection("right")
+comm.connecter("right")
 comm.ouvrir(0,3)
+
+ecran.connecter("up")
+ecran.nettoyer()
 
 function main()
     while true do
-        print(comm.ecouter()["message"])
+        local info = comm.ecouter()
+        ecran.afficher(info["message"],info["senderChannel"]+1)
+        print(info["message"])
     end
 end
