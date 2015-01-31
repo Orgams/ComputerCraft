@@ -4,6 +4,18 @@
 		"selected_items":
 		[
 			[
+				"blo",
+				"blocAGarder"
+			],
+			[
+				"sor",
+				"sortieMethode"
+			],
+			[
+				"en",
+				"entreMethode"
+			],
+			[
 				"nb",
 				"nbZ"
 			],
@@ -84,10 +96,6 @@
 				"for	for (…) {…} (Improved Native For-Loop)"
 			],
 			[
-				"en",
-				"enemy"
-			],
-			[
 				"use",
 				"useWeapon"
 			],
@@ -151,7 +159,15 @@
 			"file": "API/mineur/app.lua",
 			"settings":
 			{
-				"buffer_size": 1968,
+				"buffer_size": 2056,
+				"line_ending": "Windows"
+			}
+		},
+		{
+			"file": "API/inventaire.lua",
+			"settings":
+			{
+				"buffer_size": 4197,
 				"line_ending": "Windows"
 			}
 		},
@@ -159,33 +175,15 @@
 			"file": "API/log.lua",
 			"settings":
 			{
-				"buffer_size": 2110,
+				"buffer_size": 2106,
 				"line_ending": "Windows"
-			}
-		},
-		{
-			"file": "/D/Jeux/minecraft/MultiMC/instances/ComputerCraft/minecraft/saves/Flat/computer/0/mineur.log",
-			"settings":
-			{
-				"buffer_size": 241381,
-				"line_ending": "Windows"
-			}
-		},
-		{
-			"contents": "Searching 19 files for \"retoure\"\n\nD:\\Jeux\\minecraft\\computerCraft\\API\\inventaire.lua:\n  146      log.entreMethode(\"viderInventaire()\")\n  147      local positionTmp = move.getPosition()\n  148:     move.retoure({[\"x\"]=0,[\"y\"]=0,[\"y\"]=0})\n  149      move.directionDeriere()\n  150      for i=1,16 do\n\nD:\\Jeux\\minecraft\\computerCraft\\API\\move.lua:\n   53  end\n   54  \n   55: function retoure(tab)\n   56:   log.entreMethode(\"retoure(\",tab,\")\")\n   57    if tab[\"y\"] ~= nil then\n   58      deplacementY(tab[\"y\"])\n   ..\n  258  \n  259  \n  260:     retoure(positionDepart)\n  261  \n  262      inventaire.selectFirstSlot(_blocUtilise[\"Fuel\"])\n\n4 matches across 2 files\n\n\nSearching 19 files for \"rechargerCharbon\"\n\nD:\\Jeux\\minecraft\\computerCraft\\API\\mineur\\app.lua:\n   59    read()\n   60  \n   61:   move.rechargerCharbon()\n   62    local puit = NextPuit()\n   63    while puit do\n\nD:\\Jeux\\minecraft\\computerCraft\\API\\move.lua:\n  245        turtle.refuel(1) -- on recharge pour 96 move.deplacements\n  246        -- et on vérifie si il nous reste assez de charbon\n  247:       rechargerCharbon()\n  248      end\n  249    end\n  ...\n  251  end\n  252  \n  253: function rechargerCharbon()\n  254    log.entreMethode()\n  255:   log.debug(\"rechargerCharbon()\")\n  256    if turtle.getItemCount(charbonSlot) < niveauCharbonMini then\n  257      positionTmp = position\n\n4 matches across 2 files\n\n\nSearching 19 files for \"position[\"\n\nD:\\Jeux\\minecraft\\computerCraft\\API\\move.lua:\n   69  function deplacementY(y)\n   70    log.entreMethode(\"deplacementY()\")\n   71:   while position[\"y\"] > y do\n   72:     log.display(\"position[y] > y\")\n   73      monter()\n   74    end\n   75:   while position[\"y\"] < y do\n   76:     log.display(\"position[y] < y\")\n   77      decendre()\n   78    end\n   ..\n   86  \n   87    --nombre de déplacement en X et Z\n   88:   local nbX = math.abs(x - position[\"x\"])\n   89:   local nbZ = math.abs(z - position[\"z\"])\n   90  \n   91    -- On commence par se déplacer en x\n   92    if nbX == 0 then\n   93:     if x > position[\"x\"] then\n   94        directionDevant()\n   95:     elseif x < position[\"x\"] then\n   96        directionDeriere()\n   97      end\n   ..\n  104    -- Ensuite on fait le déplacement en z\n  105    if nbZ == 0 then\n  106:     if z > position[\"z\"] then\n  107        directionDroite()\n  108:     elseif z < position[\"z\"] then\n  109        directionGauche()\n  110      end\n  ...\n  120  function direction(direction)\n  121    log.entreMethode(\"direction(\",direction,\")\")\n  122:   while position[\"direction\"] ~= direction do\n  123      tourneDroite()\n  124    end\n  ...\n  153    log.entreMethode(\"tourneDroite()\")\n  154    turtle.turnRight()\n  155:   position[\"direction\"]=position[\"direction\"]+1\n  156:   if position[\"direction\"] == 4 then\n  157:     position[\"direction\"]=0\n  158    end\n  159    log.sortieMethode()\n  ...\n  171    end\n  172  \n  173:   if position[\"direction\"] == 0 then \n  174:     position[\"x\"] = position[\"x\"] + 1 \n  175    end\n  176:   if position[\"direction\"] == 1 then \n  177:     position[\"z\"] = position[\"z\"] + 1 \n  178    end\n  179:   if(position[\"direction\"] == 2) then\n  180:     position[\"x\"] = position[\"x\"] - 1 \n  181    end\n  182:   if position[\"direction\"] == 3 then \n  183:     position[\"z\"] = position[\"z\"] - 1 \n  184    end\n  185    remplirFuel()\n  ...\n  206  \n  207    if(res)then\n  208:     position[\"y\"] = position[\"y\"]+1\n  209      remplirFuel()\n  210    end\n  ...\n  224      sleep(0.1)\n  225    end\n  226:   position[\"y\"] = position[\"y\"]-1\n  227    remplirFuel()\n  228    log.sortieMethode()\n  ...\n  230  \n  231  function descrPosition()\n  232:   return position[\"x\"]..\";\"..position[\"z\"]..\";\"..position[\"y\"]..\";\".._direction[position[\"direction\"]]\n  233  end\n  234  \n\n35 matches in 1 file\n\n\nSearching 19 files for \"(\"position[\"\n\nD:\\Jeux\\minecraft\\computerCraft\\API\\move.lua:\n   70    log.entreMethode(\"deplacementY()\")\n   71    while position[\"y\"] > y do\n   72:     log.display(\"position[y] > y\")\n   73      monter()\n   74    end\n   75    while position[\"y\"] < y do\n   76:     log.display(\"position[y] < y\")\n   77      decendre()\n   78    end\n\n2 matches in 1 file\n\n\nSearching 19 files for \"display\"\n\nD:\\Jeux\\minecraft\\computerCraft\\API\\log.lua:\n    4  local _chemin = \"log.log\"\n    5  local _niveauAff = {\n    6:     [0]=\"display\",\n    7      [1]=\" info  \",\n    8      [2]=\" warn  \",\n    .\n   11  \n   12  _niveau = { \n   13:     [0]=\"display\",[\"display\"]=0,\n   14      [1]=\"info\",[\"info\"]=1,\n   15      [2]=\"warn\",[\"warn\"]=2,\n   ..\n   48  end\n   49  \n   50: function display(...)\n   51:     logger(concat(arg),_niveau[\"display\"])\n   52  end\n   53  \n\nD:\\Jeux\\minecraft\\computerCraft\\API\\move.lua:\n   50      tab[\"direction\"] = tab[4]\n   51    end\n   52:   log.display(\"deplacementXZ? : \",tab[\"x\"] ~= nil and tab[\"z\"] ~= nil)\n   53:   log.display(\"deplacementY? : \",tab[\"y\"] ~= nil)\n   54:   log.display(\"direction? : \",tab[\"direction\"] ~= nil)\n   55    if tab[\"x\"] ~= nil and tab[\"z\"] ~= nil then\n   56      deplacementXZ(tab[\"x\"], tab[\"z\"])\n   ..\n   98    local nbX = math.abs(x - position[\"x\"])\n   99    local nbZ = math.abs(z - position[\"z\"])\n  100:   log.display(nbX,\" - \",nbZ)\n  101    -- On commence par se déplacer en x\n  102    if nbX == 0 then\n  ...\n  231  \n  232    while not turtle.up() do\n  233:     log.display(\"tentative up\")\n  234      sleep(0.1)\n  235    end\n\nD:\\Jeux\\minecraft\\computerCraft\\reacteur.lua:\n   84  function autoMode()\n   85     mode = \"Automatic\"\n   86:    displayScreen()\n   87  end\n   88   \n   ..\n  106  end\n  107   \n  108: function displayEn()\n  109     m.clear()\n  110     m.setCursorPos(1,1)\n  ...\n  206  end\n  207   \n  208: function displayScreen()\n  209        --  repeat\n  210        checkEn()\n  211:       displayEn()\n  212           fuelRodLevel()\n  213           if mode == \"Automatic\" then\n  ...\n  238   \n  239  while true do\n  240:    displayScreen()\n  241  end\n\n15 matches across 3 files\n",
-			"settings":
-			{
-				"buffer_size": 5874,
-				"line_ending": "Windows",
-				"name": "Find Results",
-				"scratch": true
 			}
 		},
 		{
 			"file": "API/move.lua",
 			"settings":
 			{
-				"buffer_size": 5958,
+				"buffer_size": 5697,
 				"line_ending": "Windows"
 			}
 		},
@@ -201,7 +199,7 @@
 			"file": "API/table.lua",
 			"settings":
 			{
-				"buffer_size": 577,
+				"buffer_size": 777,
 				"line_ending": "Windows"
 			}
 		}
@@ -307,6 +305,9 @@
 	],
 	"file_history":
 	[
+		"/D/LiberKey/MyApps/Sublime Text/Data/Packages/User/Default (Windows).sublime-keymap",
+		"/D/LiberKey/MyApps/Sublime Text/Data/Packages/Default/Default (Windows).sublime-keymap",
+		"/D/Jeux/minecraft/computerCraft/API/constante.lua",
 		"/D/Jeux/minecraft/MultiMC/instances/ComputerCraft/minecraft/saves/Flat/computer/0/mineur.log",
 		"/D/Jeux/minecraft/MultiMC/instances/ComputerCraft/minecraft/saves/Flat/computer/0/log.log",
 		"/D/Jeux/minecraft/MultiMC/instances/ComputerCraft/minecraft/saves/New World/computer/0/bucheron.log",
@@ -385,6 +386,9 @@
 		"case_sensitive": false,
 		"find_history":
 		[
+			"left",
+			"display",
+			"videInventaire",
 			"~=",
 			"display",
 			"nbZ",
@@ -459,6 +463,7 @@
 		"regex": false,
 		"replace_history":
 		[
+			"viderInventaire",
 			"-",
 			"$1,$4,,$2,$3",
 			"$1:$2:$3:$4:$5:$6",
@@ -504,7 +509,7 @@
 	"groups":
 	[
 		{
-			"selected": 0,
+			"selected": 3,
 			"sheets":
 			[
 				{
@@ -513,15 +518,15 @@
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 1968,
+						"buffer_size": 2056,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								588,
-								602
+								222,
+								222
 							]
 						],
 						"settings":
@@ -531,27 +536,27 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 15.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 0,
+					"stack_index": 4,
 					"type": "text"
 				},
 				{
 					"buffer": 1,
-					"file": "API/log.lua",
+					"file": "API/inventaire.lua",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 2110,
+						"buffer_size": 4197,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								468,
-								468
+								3583,
+								3594
 							]
 						],
 						"settings":
@@ -561,7 +566,7 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 57.0,
+						"translation.y": 2572.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 1,
@@ -569,27 +574,29 @@
 				},
 				{
 					"buffer": 2,
-					"file": "/D/Jeux/minecraft/MultiMC/instances/ComputerCraft/minecraft/saves/Flat/computer/0/mineur.log",
+					"file": "API/log.lua",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 241381,
+						"buffer_size": 2106,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								8412,
-								8412
+								1465,
+								1465
 							]
 						],
 						"settings":
 						{
-							"syntax": "Packages/Text/Plain text.tmLanguage"
+							"syntax": "Packages/Lua/Lua.tmLanguage",
+							"tab_size": 4,
+							"translate_tabs_to_spaces": true
 						},
-						"translation.x": 0.0,
-						"translation.y": 2546.0,
+						"translation.x": -0.0,
+						"translation.y": 712.0,
 						"zoom_level": 1.0
 					},
 					"stack_index": 3,
@@ -597,314 +604,19 @@
 				},
 				{
 					"buffer": 3,
-					"semi_transient": false,
-					"settings":
-					{
-						"buffer_size": 5874,
-						"regions":
-						{
-							"match":
-							{
-								"flags": 112,
-								"regions":
-								[
-									[
-										201,
-										208
-									],
-									[
-										378,
-										385
-									],
-									[
-										418,
-										425
-									],
-									[
-										537,
-										544
-									],
-									[
-										790,
-										806
-									],
-									[
-										1060,
-										1076
-									],
-									[
-										1148,
-										1164
-									],
-									[
-										1215,
-										1231
-									],
-									[
-										1541,
-										1550
-									],
-									[
-										1586,
-										1595
-									],
-									[
-										1652,
-										1661
-									],
-									[
-										1697,
-										1706
-									],
-									[
-										1841,
-										1850
-									],
-									[
-										1890,
-										1899
-									],
-									[
-										2002,
-										2011
-									],
-									[
-										2074,
-										2083
-									],
-									[
-										2238,
-										2247
-									],
-									[
-										2310,
-										2319
-									],
-									[
-										2487,
-										2496
-									],
-									[
-										2651,
-										2660
-									],
-									[
-										2673,
-										2682
-									],
-									[
-										2709,
-										2718
-									],
-									[
-										2752,
-										2761
-									],
-									[
-										2857,
-										2866
-									],
-									[
-										2901,
-										2910
-									],
-									[
-										2917,
-										2926
-									],
-									[
-										2961,
-										2970
-									],
-									[
-										3005,
-										3014
-									],
-									[
-										3021,
-										3030
-									],
-									[
-										3065,
-										3074
-									],
-									[
-										3109,
-										3118
-									],
-									[
-										3125,
-										3134
-									],
-									[
-										3169,
-										3178
-									],
-									[
-										3213,
-										3222
-									],
-									[
-										3229,
-										3238
-									],
-									[
-										3330,
-										3339
-									],
-									[
-										3346,
-										3355
-									],
-									[
-										3450,
-										3459
-									],
-									[
-										3466,
-										3475
-									],
-									[
-										3596,
-										3605
-									],
-									[
-										3616,
-										3625
-									],
-									[
-										3636,
-										3645
-									],
-									[
-										3667,
-										3676
-									],
-									[
-										3919,
-										3930
-									],
-									[
-										4030,
-										4041
-									],
-									[
-										4264,
-										4271
-									],
-									[
-										4376,
-										4383
-									],
-									[
-										4387,
-										4394
-									],
-									[
-										4509,
-										4516
-									],
-									[
-										4561,
-										4568
-									],
-									[
-										4701,
-										4708
-									],
-									[
-										4779,
-										4786
-									],
-									[
-										4836,
-										4843
-									],
-									[
-										5100,
-										5107
-									],
-									[
-										5257,
-										5264
-									],
-									[
-										5429,
-										5436
-									],
-									[
-										5507,
-										5514
-									],
-									[
-										5611,
-										5618
-									],
-									[
-										5687,
-										5694
-									],
-									[
-										5820,
-										5827
-									]
-								],
-								"scope": ""
-							}
-						},
-						"selection":
-						[
-							[
-								5245,
-								5245
-							]
-						],
-						"settings":
-						{
-							"detect_indentation": false,
-							"line_numbers": false,
-							"output_tag": 5,
-							"result_base_dir": "",
-							"result_file_regex": "^([A-Za-z\\\\/<].*):$",
-							"result_line_regex": "^ +([0-9]+):",
-							"scroll_past_end": true,
-							"syntax": "Packages/Default/Find Results.hidden-tmLanguage",
-							"translate_tabs_to_spaces": false
-						},
-						"translation.x": 0.0,
-						"translation.y": 3287.0,
-						"zoom_level": 1.0
-					},
-					"stack_index": 5,
-					"type": "text"
-				},
-				{
-					"buffer": 4,
 					"file": "API/move.lua",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 5958,
+						"buffer_size": 5697,
 						"regions":
 						{
 						},
 						"selection":
 						[
 							[
-								3001,
-								3007
-							],
-							[
-								3129,
-								3135
-							],
-							[
-								3259,
-								3267
-							],
-							[
-								3389,
-								3395
+								568,
+								568
 							]
 						],
 						"settings":
@@ -914,14 +626,14 @@
 							"translate_tabs_to_spaces": true
 						},
 						"translation.x": 0.0,
-						"translation.y": 2337.0,
+						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 2,
+					"stack_index": 0,
 					"type": "text"
 				},
 				{
-					"buffer": 5,
+					"buffer": 4,
 					"file": "/D/Jeux/minecraft/MultiMC/instances/ComputerCraft/minecraft/saves/Flat/computer/0/startup",
 					"semi_transient": false,
 					"settings":
@@ -945,16 +657,16 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 6,
+					"stack_index": 5,
 					"type": "text"
 				},
 				{
-					"buffer": 6,
+					"buffer": 5,
 					"file": "API/table.lua",
 					"semi_transient": false,
 					"settings":
 					{
-						"buffer_size": 577,
+						"buffer_size": 777,
 						"regions":
 						{
 						},
@@ -975,7 +687,7 @@
 						"translation.y": 0.0,
 						"zoom_level": 1.0
 					},
-					"stack_index": 4,
+					"stack_index": 2,
 					"type": "text"
 				}
 			]

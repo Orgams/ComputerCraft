@@ -1,8 +1,7 @@
 os.loadAPI("API/api")
 api.initisalisation("log","move","inventaire","constante","coffre","bloc")
 
-log.setNiveauLogFichier(log._niveau["debug"])
-log.setNomFichierLog("bucheron.log")
+log.setNomFichierLog("bucheron.csv")
 log.supFichier()
 
 local _directionCoffreEntre = nil
@@ -90,6 +89,7 @@ function remplirInventaire()
 end
 
 function main()
+    log.entreMethode("main()")
     print("J'ai besoin de sapling et de fuel.")
     print("En plus je peux prendre du fertilisant.")
     read()
@@ -114,4 +114,5 @@ function main()
         end
         sleep(10)
     end
+    log.sortieMethode()
 end

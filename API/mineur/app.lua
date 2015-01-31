@@ -1,19 +1,19 @@
 os.loadAPI("API/api")
-api.initisalisation("log","move","bloc","inventaire")
+api.initisalisation("log","move","bloc","inventaire", "comm")
 
-log.setNiveauLogFichier(log._niveau["debug"])
-log.setNomFichierLog("mineur.log")
+log.setNomFichierLog("mineur.csv")
 log.supFichier()
 
 inventaire.blocAGarder = {constante.bloc["coal"]}
 
+comm.connecter("right")
+
 local _blocNonMine = {
+  constante.bloc["grass"],
   constante.bloc["stone"],
   constante.bloc["dirt"],
   constante.bloc["gravel"]
 }
-
-local drapeauBedrock = false
 
 local positionNextPuit = {["x"]=0,["z"]=0}
 
@@ -57,25 +57,28 @@ function NextPuit()
 end
 
 function main()
-  log.entreMethode("mineur.main()")
+  log.entreMethode("main()")
   print("tortue en attente")
   read()
 
   move.rechargerCharbon()
   local puit = NextPuit()
   while puit do
-    log.info("puit : ",puit[1]," - ",puit[2])
-    drapeauBedrock = false --avant tout, on reset ce flag
+    local mess = "puit : "..puit[1].." - "..puit[2]
+    log.info(mess)
+    comm.envoie(mess)
     move.remplirFuel() -- on refait le plein si besoin
     move.aller(puit) -- puis on se déplace sur le puit a forer
 
     while move.decendre() do
-      -- ici, direction = 0
-      for i=1,4 do
-        --compare et mine
-        compare_mine()
+
+      compare_mine()
+      for i=1,3 do
         --tourne a droite
         move.tourneDroite()
+        --compare et mine
+        compare_mine()
+        
       end
     end
 

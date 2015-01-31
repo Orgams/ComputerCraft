@@ -1,5 +1,5 @@
 os.loadAPI("API/api")
-api.initisalisation("file")
+api.initisalisation("file","table","move")
 
 local _chemin = "log.log"
 local _niveauAff = {
@@ -16,7 +16,7 @@ _niveau = {
     [3]="debug",["debug"]=3
 }
 
-local _niveauUtilise = {["fichier"]=_niveau["warn"],
+local _niveauUtilise = {["fichier"]=_niveau["debug"],
                         ["console"]=_niveau["info"]}
 
 profondeur = 0
@@ -60,7 +60,10 @@ function warn(...)
 end
 
 function descrTortue()
-  return move.descrPosition()..";"..turtle.getFuelLevel()..";"..profondeur
+    if turtle == nil then
+        return ""
+    end
+    return move.descrPosition()..";"..turtle.getFuelLevel()..";"..profondeur
 end
 
 function debug(...)
