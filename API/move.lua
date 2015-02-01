@@ -1,5 +1,5 @@
 os.loadAPI("API/api")
-api.initisalisation("log","inventaire", "constante")
+api.initisalisation("log","inventaire", "constante","bloc")
 
 _direction ={
   [0]="devant",["devant"]=0,
@@ -11,6 +11,10 @@ _direction ={
 local _blocUtilise = {
     ["Fuel"] = constante.bloc["coal"]
 }
+local _blocPasCasse = {
+-- cQSonstante.bloc["chest"]
+}
+
 local position = {
   ["direction"] = 0,
   ["y"] = 0,
@@ -23,11 +27,20 @@ local niveauFuelMini = 5
 local niveauCharbonMini = 5
 
 function getPositionDepart()
-   return table.clone(positionDepart)
+  log.entreMethode("getPositionDepart()")
+  log.sortieMethode(positionDepart)
+  return table.clone(positionDepart)
 end 
 function getPosition()
-   return table.clone(position)
+  log.entreMethode("getPosition()")
+  log.sortieMethode(position)
+  return table.clone(position)
 end 
+function setBlocPasCasse(tab)
+  log.entreMethode("setBlocPasCasse(",tab,")")
+  _blocPasCasse = table.clone(tab)
+  log.sortieMethode()
+end
 
 function allerSurface()
   log.entreMethode("allerSurface()")
@@ -91,34 +104,18 @@ end
 function deplacementXZ(x,z)
   log.entreMethode("deplacementXZ("..x..","..z..")")
 
-  --nombre de déplacement en X et Z
-  local nbX = math.abs(x - position["x"])
-  local nbZ = math.abs(z - position["z"])
-
-  -- On commence par se déplacer en x
-  if nbX ~= 0 then
-    if x > position["x"] then
-      directionDevant()
-    elseif x < position["x"] then
-      directionDeriere()
-    end
-    while nbX > 0 do
-      avancer()
-      nbX = nbX - 1
-    end
+  while position["x"] < x do
+    avancerDevant()
+  end
+  while position["x"] > x do
+    avancerDerriere()
   end
 
-  -- Ensuite on fait le déplacement en z
-  if nbZ ~= 0 then
-    if z > position["z"] then
-      directionDroite()
-    elseif z < position["z"] then
-      directionGauche()
-    end
-    while nbZ > 0 do
-      avancer()
-      nbZ = nbZ - 1
-    end
+  while position["z"] < z do
+    avancerDroite()
+  end
+  while position["z"] > z do
+    avancerGauche()
   end
 
   log.sortieMethode()
@@ -144,8 +141,8 @@ function directionDroite()
   log.sortieMethode()
 end
 
-function directionDeriere()
-  log.entreMethode("directionDeriere()")
+function directionDerriere()
+  log.entreMethode("directionDerriere()")
   direction(_direction["derriere"])
   log.sortieMethode()
 end
@@ -169,28 +166,54 @@ end
 function avancer()
   log.entreMethode("avancer()")
 
-  if turtle.detect() then
-    turtle.dig()
-  end
+  log.display(_blocPasCasse)
 
-  while not turtle.forward() do
-    sleep(0.1)
-  end
+  if bloc.presance(_blocPasCasse) then
+    eviterBlocDevant()
+  else
+    if turtle.detect() then
+      turtle.dig()
+    end
 
-  if position["direction"] == 0 then 
-    position["x"] = position["x"] + 1 
+    while not turtle.forward() do
+      sleep(0.1)
+    end
+
+    if position["direction"] == 0 then 
+      position["x"] = position["x"] + 1 
+    end
+    if position["direction"] == 1 then 
+      position["z"] = position["z"] + 1 
+    end
+    if(position["direction"] == 2) then
+      position["x"] = position["x"] - 1 
+    end
+    if position["direction"] == 3 then 
+      position["z"] = position["z"] - 1 
+    end
+    remplirFuel()
   end
-  if position["direction"] == 1 then 
-    position["z"] = position["z"] + 1 
-  end
-  if(position["direction"] == 2) then
-    position["x"] = position["x"] - 1 
-  end
-  if position["direction"] == 3 then 
-    position["z"] = position["z"] - 1 
-  end
-  remplirFuel()
   log.sortieMethode()
+end
+
+function avancerDevant()
+  directionDevant()
+  avancer()
+end
+
+function avancerDerriere()
+  directionDerriere()
+  avancer()
+end
+
+function avancerDroite()
+  directionDroite()
+  avancer()
+end
+
+function avancerGauche()
+  directionGauche()
+  avancer()
 end
 
 function decendre()
@@ -232,6 +255,14 @@ function monter()
   position["y"] = position["y"]-1
   remplirFuel()
   log.sortieMethode()
+end
+
+function eviterBlocDevant()
+  monter()
+  avancer()
+  avancer()
+  decendre()
+  remplirFuel()
 end
 
 function descrPosition()

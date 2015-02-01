@@ -1,12 +1,15 @@
 os.loadAPI("API/api")
-api.initisalisation("log","move","bloc","inventaire", "comm")
+api.initisalisation("log","move","bloc","inventaire", "comm","mineur/mineur")
 
 log.setNomFichierLog("mineur.csv")
 log.supFichier()
 
+move.setBlocPasCasse({constante.bloc["chest"]})
+
 inventaire.blocAGarder = {constante.bloc["coal"]}
 
 comm.connecter("right")
+comm.ouvrir(os.getComputerID())
 
 local _blocNonMine = {
   constante.bloc["grass"],
@@ -15,9 +18,6 @@ local _blocNonMine = {
   constante.bloc["gravel"]
 }
 
-local positionNextPuit = {["x"]=0,["z"]=0}
-
--- fonction qui compare et mine
 function compare_mine()
   log.entreMethode("compare_mine()")
 
@@ -31,63 +31,47 @@ function compare_mine()
   log.sortieMethode()
 end
 
-function NextPuit()
-  log.entreMethode("NextPuit()")
-  local x = positionNextPuit["x"]
-  local z = positionNextPuit["z"]
-  if x <= 0 and z >= 0 then
-      positionNextPuit["x"] = x+1
-      positionNextPuit["z"] = z+2
-  end
-  if x > 0 and z >= 0 then
-      positionNextPuit["x"] = x+1
-      positionNextPuit["z"] = z-3
-  end
-  if x > 0 and z < 0 then
-      positionNextPuit["x"] = x-1
-      positionNextPuit["z"] = z-2
-  end
-  if x <= 0 and z < 0 then
-      positionNextPuit["x"] = x-1
-      positionNextPuit["z"] = z+3
-  end
-  log.sortieMethode({x,z})
-  return {x,z}
+function eMessage( mess )
+  log.debug("eMessage( ",mess," )")
+  log.info(mess)
+  comm.envoie("message:"..mess.."     ")
+  log.sortieMethode()
 end
 
-function eMessage( mess )
-    log.info(mess)
-    comm.envoie("message:"..mess)
+function recupNextPuit()
+  log.debug("recupNextPuit()")
+  comm.envoie("nextPuit")
+  local info = comm.ecouter()
+  local res = info["message"]
+  log.sortieMethode(res)
+  return res
 end
 
 function main()
   log.entreMethode("main()")
-  print("tortue en attente")
+  print("Mineur en attente")
   read()
 
   move.rechargerCharbon()
-  local puit = NextPuit()
+  local puit = recupNextPuit()
   while puit do
     eMessage("puit = "..puit[1].." - "..puit[2])
-    move.remplirFuel() -- on refait le plein si besoin
-    move.aller(puit) -- puis on se déplace sur le puit a forer
+    move.remplirFuel()
+    move.aller(puit)
 
     while move.decendre() do
 
       compare_mine()
       for i=1,3 do
-        --tourne a droite
         move.tourneDroite()
-        --compare et mine
         compare_mine()
         
       end
     end
 
-    -- ici je remonte a la surface
     move.allerSurface()
 
-    puit = NextPuit()
+    puit = recupNextPuit()
   end
 
   move.aller(move.getPositionDepart()) -- retour au point de départ

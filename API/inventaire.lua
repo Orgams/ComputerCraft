@@ -147,7 +147,7 @@ function viderInventaire()
     log.entreMethode("viderInventaire()")
     local positionTmp = move.getPosition()
     move.retoure({["x"]=0,["z"]=0,["y"]=0})
-    move.directionDeriere()
+    move.directionDerriere()
     for i=1,16 do
         turtle.select(i)
         data = turtle.getItemDetail()

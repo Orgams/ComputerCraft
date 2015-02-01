@@ -3,9 +3,14 @@ api.initisalisation("log")
 
 local modem
 
-function envoie(message)
-    log.entreMethode("envoie(",message,")")
-    modem.transmit(os.getComputerID(), os.getComputerID(), message) 
+function envoie(message,channel)
+    log.entreMethode("envoie(",message,",",channel,")")
+
+    if channel == nil then
+        channel = os.getComputerID()
+    end
+
+    modem.transmit(channel, os.getComputerID(), message) 
     log.sortieMethode()
 end
 
