@@ -1,5 +1,5 @@
 os.loadAPI("API/api")
-api.initisalisation("log","comm","ecran")
+api.initisalisation("log","comm","ecran","chaine")
 
 log.setNomFichierLog("central.csv")
 log.supFichier()
@@ -13,8 +13,11 @@ ecran.nettoyer()
 function main()
     while true do
         local info = comm.ecouter()
-        
-        ecran.afficher(info["senderChannel"].." : "..info["message"],info["senderChannel"]+1)
-        print(info["message"])
+        local chainesSplit = chaine.split(info["message"], ":")
+
+        if chainesSplit[1] == "message" then
+            ecran.afficher(info["senderChannel"].." : "..chainesSplit[2],info["senderChannel"]+1)
+            print(chainesSplit[2])
+        end
     end
 end
