@@ -123,6 +123,9 @@ end
 
 function direction(direction)
   log.entreMethode("direction(",direction,")")
+  if position["direction"] == (direction+1)%4 then
+    tourneGauche()
+  end
   while position["direction"] ~= direction do
     tourneDroite()
   end
@@ -156,10 +159,13 @@ end
 function tourneDroite()
   log.entreMethode("tourneDroite()")
   turtle.turnRight()
-  position["direction"]=position["direction"]+1
-  if position["direction"] == 4 then
-    position["direction"]=0
-  end
+  position["direction"]=(position["direction"]+1)%4
+  log.sortieMethode()
+end
+function tourneGauche()
+  log.entreMethode("tourneGauche()")
+  turtle.turnLeft()
+  position["direction"]=(position["direction"]-1)%4
   log.sortieMethode()
 end
 
