@@ -13,6 +13,7 @@ ecran.nettoyer()
 function main()
     while true do
         local info = comm.ecouter()
+        
         ecran.afficher(info["senderChannel"].." : "..info["message"],info["senderChannel"]+1)
         print(info["message"])
     end
