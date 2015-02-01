@@ -32,8 +32,7 @@ function compare_mine()
 end
 
 function NextPuit()
-  log.entreMethode()
-  log.debug("NextPuit()")
+  log.entreMethode("NextPuit()")
   local x = positionNextPuit["x"]
   local z = positionNextPuit["z"]
   if x <= 0 and z >= 0 then
@@ -56,6 +55,11 @@ function NextPuit()
   return {x,z}
 end
 
+function eMessage( mess )
+    log.info(mess)
+    comm.envoie("message:"..mess)
+end
+
 function main()
   log.entreMethode("main()")
   print("tortue en attente")
@@ -64,9 +68,7 @@ function main()
   move.rechargerCharbon()
   local puit = NextPuit()
   while puit do
-    local mess = "puit : "..puit[1].." - "..puit[2]
-    log.info(mess)
-    comm.envoie(mess)
+    eMessage("puit = "..puit[1].." - "..puit[2])
     move.remplirFuel() -- on refait le plein si besoin
     move.aller(puit) -- puis on se déplace sur le puit a forer
 

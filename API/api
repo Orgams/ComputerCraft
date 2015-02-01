@@ -1,18 +1,25 @@
 repApi = "API/"
+repApi = "API/"
+
+apiPasse = {}
 
 local function supExtention( nomFichierSansExt )
-    if fs.exists("API/"..nomFichierSansExt..".lua") then
-        if fs.exists("API/"..nomFichierSansExt) then
-            fs.delete("API/"..nomFichierSansExt)
+    if fs.exists(repApi..nomFichierSansExt..".lua") then
+        if fs.exists(repApi..nomFichierSansExt) then
+            fs.delete(repApi..nomFichierSansExt)
         end
-        fs.move("API/"..nomFichierSansExt..".lua","API/"..nomFichierSansExt)
+        fs.move(repApi..nomFichierSansExt..".lua",repApi..nomFichierSansExt)
     end
 end
 
 function initisalisation( ... )
     for i,cheminApi in ipairs(arg) do
-        supExtention(cheminApi)
-        os.loadAPI(repApi..cheminApi)
+        if apiPasse [cheminApi] == nil then
+            apiPasse [cheminApi] = "enCour"
+            supExtention(cheminApi)
+            os.loadAPI(repApi..cheminApi)
+            apiPasse [cheminApi] = "fait"
+        end
     end
 end
 
