@@ -41,10 +41,10 @@ local function computeNumItems(coffre, itemType)
     local liste = {}
     local counter = 0
     for iSlot= 0, coffreSize-1 do
-        local tableInfo = coffre.getStackInSlot(iSlot)
-        if tableInfo ~= nil and tableInfo.name==itemType then
+        local tableauInfo = coffre.getStackInSlot(iSlot)
+        if tableauInfo ~= nil and tableauInfo.name==itemType then
             table.insert(liste,iSlot)
-            counter=counter+tableInfo.qty
+            counter=counter+tableauInfo.qty
         end
     end
     return counter, liste
@@ -58,8 +58,8 @@ local function craftBlock()
     coffreCobble.condense()
     coffreCobble.swapStacks(0,coffreSize-1)--coffre should not be full
     turtle.dropUp()--will push in slot 0
-    local tableInfo = coffreCobble.getStackInSlot(0)
-    return tableInfo.name
+    local tableauInfo = coffreCobble.getStackInSlot(0)
+    return tableauInfo.name
 end
 
 local function processBatch(itemType)

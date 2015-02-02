@@ -1,3 +1,6 @@
+os.loadAPI("API/api")
+api.initisalisation("chaine")
+
 local function ouvrirEn(chemin, mode)
 
   --si le fichier est un repertoire
@@ -22,6 +25,10 @@ local function ouvrirEn(chemin, mode)
   return fs.open(chemin, mode)
 end
 
+local function ouvrirEnLecture(chemin)
+  return ouvrirEn(chemin, "r")
+end
+
 local function ouvrirEnEcriture(chemin)
   return ouvrirEn(chemin, "w")
 end
@@ -30,26 +37,58 @@ local function ouvrirEnAjout(chemin)
   return ouvrirEn(chemin, "a")
 end
 
+function lire(chemin)
+  if chemin == nil then
+    chemin = ""
+  end
+  fichier = ouvrirEnLecture(chemin)
+  if not fichier then
+    return false
+  end
+  local res = fichier.readAll(chemin)
+  fichier.close()
+  return res
+end
+
 function ecrire(chemin, texte)
+  creerDossier(getParent(chemin))
   fichier = ouvrirEnEcriture(chemin)
   if not fichier then
     return false
   end
   fichier.writeLine(texte)
   fichier.flush()
+  fichier.close()
 end
 
 function ajouter(chemin, texte)
+  creerDossier(getParent(chemin))
   fichier = ouvrirEnAjout(chemin)
   if not fichier then
     return false
   end
   fichier.writeLine(texte)
   fichier.flush()
+  fichier.close()
+end
+
+function creerDossier(chemin)
+  if fs.exists(chemin) then
+    return
+  end
+  local parent = getParent(chemin)
+  creerDossier(parent)
+  fs.makeDir(chemin)
 end
 
 function supFichier(chemin)
   if fs.exists(chemin) then
     fs.delete(chemin)
   end
+end
+
+function getParent(chemin)
+  local splits = chaine.split(chemin,"/")
+  table.remove (splits)
+  return chaine.join(splits,"/")
 end

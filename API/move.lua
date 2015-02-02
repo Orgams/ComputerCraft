@@ -11,9 +11,7 @@ _direction ={
 local _blocUtilise = {
     ["Fuel"] = constante.bloc["coal"]
 }
-local _blocPasCasse = {
--- cQSonstante.bloc["chest"]
-}
+local _blocPasCasse = {}
 
 local position = {
   ["direction"] = 0,
@@ -23,22 +21,22 @@ local position = {
 }
 local positionDepart = position
 
-local niveauFuelMini = 5
-local niveauCharbonMini = 5
+local niveauFuelMini = 75
+local niveauCharbonMini = 10
 
 function getPositionDepart()
   log.entreMethode("getPositionDepart()")
   log.sortieMethode(positionDepart)
-  return table.clone(positionDepart)
+  return tableau.clone(positionDepart)
 end 
 function getPosition()
   log.entreMethode("getPosition()")
   log.sortieMethode(position)
-  return table.clone(position)
+  return tableau.clone(position)
 end 
 function setBlocPasCasse(tab)
   log.entreMethode("setBlocPasCasse(",tab,")")
-  _blocPasCasse = table.clone(tab)
+  _blocPasCasse = tableau.clone(tab)
   log.sortieMethode()
 end
 
@@ -301,7 +299,8 @@ function rechargerCharbon()
     retoure(positionDepart)
 
     inventaire.selectFirstSlot(_blocUtilise["Fuel"])
-    turtle.suckUp()
+    directionGauche()
+    turtle.suck()
 
     aller(positionTmp)
 

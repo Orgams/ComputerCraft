@@ -6,10 +6,9 @@ log.supFichier()
 
 move.setBlocPasCasse({constante.bloc["chest"]})
 
-inventaire.blocAGarder = {constante.bloc["coal"]}
+inventaire.setBlocAGarder({constante.bloc["coal"]})
 
-comm.connecter("right")
-comm.ouvrir(os.getComputerID())
+comm.connecter()
 
 local _blocNonMine = {
   constante.bloc["grass"],
@@ -40,9 +39,14 @@ end
 
 function recupNextPuit()
   log.debug("recupNextPuit()")
-  comm.envoie("nextPuit")
-  local info = comm.ecouter()
-  local res = info["message"]
+  local res
+  if comm.isConnecter() then
+    comm.envoie("nextPuit")
+    local info = comm.ecouter()
+    res = info["message"]
+  else
+    res = mineur.nextPuit()
+  end
   log.sortieMethode(res)
   return res
 end
@@ -70,12 +74,8 @@ function main()
     end
 
     move.allerSurface()
-
+    inventaire.viderInventaire()
     puit = recupNextPuit()
   end
-
-  move.aller(move.getPositionDepart()) -- retour au point de départ
-
-  inventaire.viderInventaire()
   log.sortieMethode()
 end

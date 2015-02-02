@@ -12,3 +12,5 @@ bloc = {
     ["rubbersapling"] = "MineFactoryReloaded:rubberwood.sapling", ["MineFactoryReloaded:rubberwood.sapling"] = "rubbersapling",
     ["rubberwood"] = "MineFactoryReloaded:rubberwood.log", ["MineFactoryReloaded:rubberwood.log"] = "rubberwood"
 }
+
+side = {"up","down","front","back","left","right"}

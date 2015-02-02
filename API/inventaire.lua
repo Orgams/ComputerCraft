@@ -1,10 +1,10 @@
 os.loadAPI("API/api")
-api.initisalisation("table","coffre","move")
+api.initisalisation("tableau","coffre","move")
 
 blocAGarder = {}
 
 function setBlocAGarder(tab)
-    blocAGarder = table.clone(tab)
+    blocAGarder = tableau.clone(tab)
 end
 
 function nextSlot(id,slotDepart)
@@ -137,7 +137,7 @@ function viderSurplus()
     for i=1,16 do
         data = turtle.getItemDetail(i)
         if data ~= nil then
-            if table.contains(itemPasse, data.name) then
+            if tableau.contains(itemPasse, data.name) then
                 turtle.select(i)
                 turtle.drop ()
             else

@@ -1,5 +1,5 @@
 os.loadAPI("API/api")
-api.initisalisation("file","table","move")
+api.initisalisation("file","tableau","move")
 
 local _chemin = "log.log"
 local _niveauAff = {
@@ -24,8 +24,8 @@ function concat(tab)
     local res = ""
     for key,value in ipairs(tab) do
         local val = value
-        if table.isTable(value) then
-            val = table.toString(value)
+        if tableau.isTable(value) then
+            val = tableau.toString(value)
         end
         res = res..tostring(val)
     end
