@@ -98,8 +98,6 @@ function deplacementY(y)
   end
   log.sortieMethode()
 end
-
-
 -- pour aller a des coordonnées précises
 function deplacementXZ(x,z)
   log.entreMethode("deplacementXZ("..x..","..z..")")

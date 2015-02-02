@@ -4,19 +4,15 @@ api.initisalisation("log","move","inventaire","constante","coffre","bloc")
 log.setNomFichierLog("bucheron.csv")
 log.supFichier()
 
-local _directionCoffreEntre = nil
+local _directionCoffreEntre = "Left"
 
 local _blocUtilise = {
-    ["Sapling"] = constante.bloc["rubbersapling"],
-    ["Wood"] = constante.bloc["rubberwood"],
+    ["Sapling"] = constante.bloc["sapling"],
+    ["Wood"] = constante.bloc["bois"],
     ["Fuel"] = constante.bloc["coal"],
     ["Fertilisant"] = constante.bloc["bonemeal"]
 }
-inventaire.blocAGarder = {
-    _blocUtilise["Sapling"],
-    _blocUtilise["Fertilisant"],
-    _blocUtilise["Fuel"]
-}
+inventaire.setBlocAGarder({_blocUtilise["Sapling"],_blocUtilise["Fertilisant"],_blocUtilise["Fuel"]})
 
 function presanceWood()
     log.entreMethode("presanceWood()")
@@ -94,6 +90,7 @@ function main()
     print("En plus je peux prendre du fertilisant.")
     read()
     remplirInventaire()
+    move.remplirFuel()
     while true do
         move.directionDevant()
         local success, data = turtle.inspect()

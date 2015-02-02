@@ -3,6 +3,10 @@ api.initisalisation("table","coffre","move")
 
 blocAGarder = {}
 
+function setBlocAGarder(tab)
+    blocAGarder = table.clone(tab)
+end
+
 function nextSlot(id,slotDepart)
     log.entreMethode("nextSlot(",id,",",slotDepart,")")
     for i=slotDepart+1,16 do
