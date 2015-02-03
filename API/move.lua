@@ -1,5 +1,5 @@
 os.loadAPI("API/api")
-api.initisalisation("log","inventaire", "constante","bloc")
+api.initisalisation("log","inventaire", "constante","bloc","bdd")
 
 _direction ={
   [0]="devant",["devant"]=0,
@@ -19,6 +19,11 @@ local position = {
   ["x"] = 0,
   ["z"] = 0
 }
+
+local positionTmp
+
+bdd.sauver(position, os.getComputerID())
+
 local positionDepart = position
 
 local niveauFuelMini = 75
@@ -39,6 +44,18 @@ function setBlocPasCasse(tab)
   _blocPasCasse = tableau.clone(tab)
   log.sortieMethode()
 end
+
+function setPositionTmp(tab)
+  log.entreMethode("setPositionTmp(",tab,")")
+  positionTmp = tableau.clone(tab)
+  log.sortieMethode()
+end
+
+function getPositionTmp()
+  log.entreMethode("getPositionTmp()")
+  log.sortieMethode(positionTmp)
+  return tableau.clone(positionTmp)
+end 
 
 function allerSurface()
   log.entreMethode("allerSurface()")
@@ -156,12 +173,14 @@ function tourneDroite()
   log.entreMethode("tourneDroite()")
   turtle.turnRight()
   position["direction"]=(position["direction"]+1)%4
+  bdd.sauver({["direction"]=position["direction"]}, os.getComputerID())
   log.sortieMethode()
 end
 function tourneGauche()
   log.entreMethode("tourneGauche()")
   turtle.turnLeft()
   position["direction"]=(position["direction"]-1)%4
+  bdd.sauver({["direction"]=position["direction"]}, os.getComputerID())
   log.sortieMethode()
 end
 
@@ -193,6 +212,7 @@ function avancer()
     if position["direction"] == 3 then 
       position["z"] = position["z"] - 1 
     end
+    bdd.sauver({["z"]=position["z"],["x"]=position["x"]}, os.getComputerID())
     remplirFuel()
   end
   log.sortieMethode()
@@ -238,6 +258,7 @@ function decendre()
 
   if(res)then
     position["y"] = position["y"]+1
+    bdd.sauver({["y"]=position["y"]}, os.getComputerID())
     remplirFuel()
   end
   log.sortieMethode(res)
@@ -255,6 +276,7 @@ function monter()
     sleep(0.1)
   end
   position["y"] = position["y"]-1
+  bdd.sauver({["y"]=position["y"]}, os.getComputerID())
   remplirFuel()
   log.sortieMethode()
 end
@@ -295,6 +317,8 @@ function rechargerCharbon()
   if turtle.getItemCount(charbonSlot) < niveauCharbonMini then
     positionTmp = position
 
+    bdd.sauver(positionTmp, os.getComputerID().."/tmp")
+    bdd.sauver({["action"]="recharger charbon"}, os.getComputerID())
 
     retoure(positionDepart)
 
@@ -302,6 +326,7 @@ function rechargerCharbon()
     directionGauche()
     turtle.suck()
 
+    bdd.sauver({["action"]="retourer au point de départ"}, os.getComputerID())
     aller(positionTmp)
 
   end
