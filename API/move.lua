@@ -13,18 +13,16 @@ local _blocUtilise = {
 }
 local _blocPasCasse = {}
 
-local position = {
+local positionDepart = {
   ["direction"] = 0,
   ["y"] = 0,
   ["x"] = 0,
   ["z"] = 0
 }
 
+local position = positionDepart
+
 local positionTmp
-
-bdd.sauver(position, os.getComputerID())
-
-local positionDepart = position
 
 local niveauFuelMini = 75
 local niveauCharbonMini = 10
@@ -186,9 +184,6 @@ end
 
 function avancer()
   log.entreMethode("avancer()")
-
-  log.display(_blocPasCasse)
-
   if bloc.presance(_blocPasCasse) then
     eviterBlocDevant()
   else
@@ -282,15 +277,18 @@ function monter()
 end
 
 function eviterBlocDevant()
+  log.entreMethode("eviterBlocDevant()")
   monter()
   avancer()
   avancer()
   decendre()
   remplirFuel()
+  log.sortieMethode()
 end
 
 function descrPosition()
-  return position["x"]..";"..position["z"]..";"..position["y"]..";".._direction[position["direction"]]
+  local desc = position["x"]..";"..position["z"]..";"..position["y"]..";".._direction[position["direction"]]
+  return desc
 end
 
 -- vérifie si on a assez de fuel (déplacements) en réserve.
@@ -318,7 +316,7 @@ function rechargerCharbon()
     positionTmp = position
 
     bdd.sauver(positionTmp, os.getComputerID().."/tmp")
-    bdd.sauver({["action"]="recharger charbon"}, os.getComputerID())
+    bdd.sauver({["action"]="recharger_charbon"}, os.getComputerID())
 
     retoure(positionDepart)
 
@@ -326,9 +324,19 @@ function rechargerCharbon()
     directionGauche()
     turtle.suck()
 
-    bdd.sauver({["action"]="retourer au point de départ"}, os.getComputerID())
+    bdd.sauver({["action"]="retoure_depart"}, os.getComputerID())
     aller(positionTmp)
 
+  end
+  log.sortieMethode()
+end
+
+function init()
+  log.entreMethode("init()")
+  position = bdd.charger({"x","z","y","direction"}, os.getComputerID())
+  if next(position) == nil then
+    position = {["direction"] = 0,["y"] = 0,["x"] = 0,["z"] = 0}
+    bdd.sauver(position, os.getComputerID())
   end
   log.sortieMethode()
 end

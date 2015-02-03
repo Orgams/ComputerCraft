@@ -45,7 +45,14 @@ function lire(chemin)
   if not fichier then
     return false
   end
-  local res = fichier.readAll(chemin)
+  local res
+  local lu = fichier.readAll(chemin)
+  local nombre = tonumber(lu)
+  if nombre ~= nil then
+    res = nombre
+  else
+    res = lu
+  end
   fichier.close()
   return res
 end
@@ -56,7 +63,7 @@ function ecrire(chemin, texte)
   if not fichier then
     return false
   end
-  fichier.writeLine(texte)
+  fichier.writeLine(tostring(texte))
   fichier.flush()
   fichier.close()
 end
@@ -67,7 +74,7 @@ function ajouter(chemin, texte)
   if not fichier then
     return false
   end
-  fichier.writeLine(texte)
+  fichier.writeLine(tostring(texte))
   fichier.flush()
   fichier.close()
 end

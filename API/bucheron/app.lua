@@ -4,6 +4,9 @@ api.initisalisation("log","move","inventaire","constante","coffre","bloc")
 log.setNomFichierLog("bucheron.csv")
 log.supFichier()
 
+move.setBlocPasCasse({constante.bloc["chest"], constante.bloc["bois"]})
+move.init()
+
 local _directionCoffreEntre = "Left"
 
 local _blocUtilise = {

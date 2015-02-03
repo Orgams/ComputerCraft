@@ -2,8 +2,8 @@
 ## Sublime text
 #################
 
-computeurCraft.sublime-workspace
-computeurCraft.sublime-project
+*.sublime-workspace
+*.sublime-project
 
 #################
 ## Eclipse

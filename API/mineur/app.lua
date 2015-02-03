@@ -5,6 +5,7 @@ log.setNomFichierLog("mineur.csv")
 log.supFichier()
 
 move.setBlocPasCasse({constante.bloc["chest"]})
+move.init()
 
 inventaire.setBlocAGarder({constante.bloc["coal"]})
 
@@ -18,6 +19,8 @@ local _blocNonMine = {
 }
 
 local puit
+
+local departAuto = true
 
 function compare_mine()
   log.entreMethode("compare_mine()")
@@ -76,38 +79,14 @@ function creuserPuit()
   log.sortieMethode()
 end
 
-function reprise()
-  log.entreMethode("reprise()")
-  local res = false
-  local action = bdd.charger({"action"}, os.getComputerID())
-  position = bdd.charger({"x","z","y","direction"}, os.getComputerID())
-  if action == "minage" then
-    creuserPuit()
-    res = true
-  elseif action == "remonter" then
-    move.allerSurface()
-    res = true
-  elseif action == "recharger charbon" then
-    move.setPositionTmp(bdd.charger({"x","z","y","direction"}, os.getComputerID().."/tmp"))
-    move.rechargerCharbon()
-    res = true
-  elseif action == "retourer au point de départ" then
-    move.setPositionTmp(bdd.charger({"x","z","y","direction"}, os.getComputerID().."/tmp"))
-    move.aller(move.getPositionTmp())
-    creuserPuit()
-    res = true
-  end
-  log.sortieMethode(res)
-  return res
-end
-
 function main()
   log.entreMethode("main()")
+  move.retoure(move.getPositionDepart())
   print("Mineur en attente")
-  bdd.sauver({["action"]="préparation"}, os.getComputerID())
-  --if not reprise() then
+  bdd.sauver({["action"]="preparation"}, os.getComputerID())
+  if not departAuto then
     read()
-  --end
+  end
 
   move.rechargerCharbon()
   puit = recupNextPuit()
