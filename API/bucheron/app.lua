@@ -4,7 +4,11 @@ api.initisalisation("log","move","inventaire","constante","coffre","bloc")
 log.setNomFichierLog("bucheron.csv")
 log.supFichier()
 
-move.setBlocPasCasse({constante.bloc["chest"], constante.bloc["bois"]})
+move.setBlocPasCasse({
+    constante.bloc["chest"], 
+    constante.bloc["bois"], 
+    constante.bloc["sapling"]
+})
 move.init()
 
 local _directionCoffreEntre = "Left"
@@ -18,7 +22,13 @@ local _blocUtilise = {
 
 inventaire.setBlocAGarder({_blocUtilise["Sapling"],_blocUtilise["Fertilisant"],_blocUtilise["Fuel"]})
 
-local autostat = true
+local autostat = false
+
+local champs = {
+    ["L"]=2,
+    ["l"]=4,
+    ["ecart"]=3
+}
 
 function presanceWood()
     log.entreMethode("presanceWood()")
@@ -89,7 +99,22 @@ function remplirInventaire()
     inventaire.viderSurplus()
     log.sortieMethode()
 end
-
+function traiterArbre()
+    local success, data = turtle.inspect()
+    if not turtle.detect() then
+        -- log.info("il n'y a rien")
+        plante()
+    end
+    if presanceSapling() then
+        -- log.info("il y a une pousse d'arbre")
+        fertilise()
+    end
+    if presanceWood() then
+        -- log.info("il y a un tronc d'arbre")
+        couperArbre()
+        
+    end
+end
 function main()
     log.entreMethode("main()")
     print("J'ai besoin de sapling et de fuel.")
@@ -97,27 +122,20 @@ function main()
     if not autostat then
         read()
     end
-    remplirInventaire()
-    move.remplirFuel()
+
     while true do
-        move.directionDevant()
-        local success, data = turtle.inspect()
-        if presanceSapling() then
-            log.info("il y a une pousse d'arbre")
-            fertilise()
-        end
-        if presanceWood() then
-            log.info("il y a un tronc d'arbre")
-            couperArbre()
-            inventaire.viderInventaire()
-            remplirInventaire()
-            move.directionDevant()
-        end
-        if not turtle.detect() then
-            log.info("il n'y a rien")
-            plante()
-        end
-        sleep(10)
+        remplirInventaire()
+        move.remplirFuel()
+        print(champs["L"])
+        for i=1,champs["L"] do
+        --     for j=1,champs["l"] do
+                print("move.aller({[x]=",i*champs["ecart"],"})")
+                move.aller({["x"]=i*champs["ecart"]})
+                move.directionDevant()  
+                traiterArbre()
+        --     end
+        end      
+        inventaire.viderInventaire()
     end
     log.sortieMethode()
 end
