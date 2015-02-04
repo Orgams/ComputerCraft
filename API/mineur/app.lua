@@ -20,7 +20,7 @@ local _blocNonMine = {
 
 local puit
 
-local departAuto = true
+local autostat = true
 
 function compare_mine()
   log.entreMethode("compare_mine()")
@@ -52,14 +52,14 @@ function recupNextPuit()
   else
     res = mineur.nextPuit()
   end
-  log.sortieMethode(res)
-  return res
+  puit = res
+  bdd.sauver(puit, os.getComputerID().."/puit")
+  log.sortieMethode()
 end
 
 function creuserPuit()
   log.entreMethode("creuserPuit()")
-  eMessage("puit = "..puit[1].." - "..puit[2])
-  bdd.sauver({["puit"]=puit}, os.getComputerID())
+  eMessage("puit = "..puit["x"].." - "..puit["z"])
 
   move.remplirFuel()
   move.aller(puit)
@@ -74,22 +74,34 @@ function creuserPuit()
   end
   bdd.sauver({["action"]="remonter"}, os.getComputerID())
   move.allerSurface()
+  move.aller(move.getPositionDepart())
   inventaire.viderInventaire()
-  puit = recupNextPuit()
+  recupNextPuit()
   log.sortieMethode()
+end
+
+function init()
+  local tab = bdd.charger(os.getComputerID().."/puit")
+  if next(tab) ~= nil then
+    mineur.setPositionNextPuit(tab)
+  end
 end
 
 function main()
   log.entreMethode("main()")
+  log.display(puit)
+  init()
+  log.display(puit)
   move.retoure(move.getPositionDepart())
   print("Mineur en attente")
   bdd.sauver({["action"]="preparation"}, os.getComputerID())
-  if not departAuto then
+  if not autostat then
     read()
   end
-
+  log.display(puit)
   move.rechargerCharbon()
-  puit = recupNextPuit()
+  recupNextPuit()
+  log.display(puit)
   while puit do
     creuserPuit()
   end

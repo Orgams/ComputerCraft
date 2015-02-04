@@ -88,6 +88,18 @@ function creerDossier(chemin)
   fs.makeDir(chemin)
 end
 
+function listeFichier(chemin)
+  local res = {}
+  if fs.exists(chemin) then
+    for _,elem in ipairs(fs.list(chemin)) do
+       if not fs.isDir(chemin.."/"..elem) then
+        table.insert(res, elem)
+       end
+     end 
+  end
+  return res
+end
+
 function supFichier(chemin)
   if fs.exists(chemin) then
     fs.delete(chemin)

@@ -3,6 +3,10 @@ api.initisalisation("log")
 
 local positionNextPuit = {["x"]=0,["z"]=0}
 
+function setPositionNextPuit(tab)
+  positionNextPuit = tableau.clone(tab)
+end
+
 function nextPuit()
   log.entreMethode("nextPuit()")
   local x = positionNextPuit["x"]
@@ -23,6 +27,7 @@ function nextPuit()
       positionNextPuit["x"] = x-1
       positionNextPuit["z"] = z+3
   end
-  log.sortieMethode({x,z})
-  return {x,z}
+  local puitTmp = {["x"]=x,["z"]=z}
+  log.sortieMethode(puitTmp)
+  return puitTmp
 end

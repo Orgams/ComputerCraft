@@ -14,12 +14,15 @@ function sauver(donnees, groupe)
     log.sortieMethode()
 end
 
-function charger(donnees, groupe)
-    log.entreMethode("charger(",donnees,", ",groupe,")")
+function charger(groupe, donnees)
+    log.entreMethode("charger(",groupe,", ",donnees,")")
     if groupe == nil then
         groupe = ""
     end
     local res = {}
+    if donnees == nil then
+        donnees = file.listeFichier(repBdd.."/"..groupe)
+    end
     for _,donnee in pairs(donnees) do
         local contenu = file.lire(repBdd.."/"..groupe.."/"..donnee)
         if contenu ~= "" then

@@ -15,7 +15,10 @@ local _blocUtilise = {
     ["Fuel"] = constante.bloc["coal"],
     ["Fertilisant"] = constante.bloc["bonemeal"]
 }
+
 inventaire.setBlocAGarder({_blocUtilise["Sapling"],_blocUtilise["Fertilisant"],_blocUtilise["Fuel"]})
+
+local autostat = true
 
 function presanceWood()
     log.entreMethode("presanceWood()")
@@ -91,7 +94,9 @@ function main()
     log.entreMethode("main()")
     print("J'ai besoin de sapling et de fuel.")
     print("En plus je peux prendre du fertilisant.")
-    read()
+    if not autostat then
+        read()
+    end
     remplirInventaire()
     move.remplirFuel()
     while true do

@@ -118,12 +118,11 @@ function deplacementXZ(x,z)
   while position["x"] < x do
     avancerDevant()
   end
-  while position["x"] > x do
-    avancerDerriere()
-  end
-
   while position["z"] < z do
     avancerDroite()
+  end
+  while position["x"] > x do
+    avancerDerriere()
   end
   while position["z"] > z do
     avancerGauche()
@@ -170,15 +169,13 @@ end
 function tourneDroite()
   log.entreMethode("tourneDroite()")
   turtle.turnRight()
-  position["direction"]=(position["direction"]+1)%4
-  bdd.sauver({["direction"]=position["direction"]}, os.getComputerID())
+  modifierPosition("direction", (position["direction"]+1)%4)
   log.sortieMethode()
 end
 function tourneGauche()
   log.entreMethode("tourneGauche()")
   turtle.turnLeft()
-  position["direction"]=(position["direction"]-1)%4
-  bdd.sauver({["direction"]=position["direction"]}, os.getComputerID())
+  modifierPosition("direction", (position["direction"]-1)%4)
   log.sortieMethode()
 end
 
@@ -196,18 +193,17 @@ function avancer()
     end
 
     if position["direction"] == 0 then 
-      position["x"] = position["x"] + 1 
+      modifierPosition("x", position["x"]+1)
     end
     if position["direction"] == 1 then 
-      position["z"] = position["z"] + 1 
+      modifierPosition("z", position["z"]+1)
     end
     if(position["direction"] == 2) then
-      position["x"] = position["x"] - 1 
+      modifierPosition("x", position["x"]-1)
     end
     if position["direction"] == 3 then 
-      position["z"] = position["z"] - 1 
+      modifierPosition("z", position["z"]-1)
     end
-    bdd.sauver({["z"]=position["z"],["x"]=position["x"]}, os.getComputerID())
     remplirFuel()
   end
   log.sortieMethode()
@@ -252,8 +248,7 @@ function decendre()
   end
 
   if(res)then
-    position["y"] = position["y"]+1
-    bdd.sauver({["y"]=position["y"]}, os.getComputerID())
+    modifierPosition("y", position["y"]+1)
     remplirFuel()
   end
   log.sortieMethode(res)
@@ -270,10 +265,14 @@ function monter()
   while not turtle.up() do
     sleep(0.1)
   end
-  position["y"] = position["y"]-1
-  bdd.sauver({["y"]=position["y"]}, os.getComputerID())
+  modifierPosition("y", position["y"]-1)
   remplirFuel()
   log.sortieMethode()
+end
+
+function modifierPosition(nomAttribut, valeurAttribut)
+  position[nomAttribut] = valeurAttribut
+  bdd.sauver({[nomAttribut] = valeurAttribut}, os.getComputerID().."/position")
 end
 
 function eviterBlocDevant()
@@ -287,6 +286,7 @@ function eviterBlocDevant()
 end
 
 function descrPosition()
+  --print(_direction[position["direction"]])
   local desc = position["x"]..";"..position["z"]..";"..position["y"]..";".._direction[position["direction"]]
   return desc
 end
@@ -315,7 +315,7 @@ function rechargerCharbon()
   if turtle.getItemCount(charbonSlot) < niveauCharbonMini then
     positionTmp = position
 
-    bdd.sauver(positionTmp, os.getComputerID().."/tmp")
+    bdd.sauver(positionTmp, os.getComputerID().."/positionTmp")
     bdd.sauver({["action"]="recharger_charbon"}, os.getComputerID())
 
     retoure(positionDepart)
@@ -333,10 +333,10 @@ end
 
 function init()
   log.entreMethode("init()")
-  position = bdd.charger({"x","z","y","direction"}, os.getComputerID())
+  position = bdd.charger(os.getComputerID().."/position")
   if next(position) == nil then
     position = {["direction"] = 0,["y"] = 0,["x"] = 0,["z"] = 0}
-    bdd.sauver(position, os.getComputerID())
+    bdd.sauver(position, os.getComputerID().."/position")
   end
   log.sortieMethode()
 end
