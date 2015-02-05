@@ -25,9 +25,9 @@ inventaire.setBlocAGarder({_blocUtilise["Sapling"],_blocUtilise["Fertilisant"],_
 local autostat = false
 
 local champs = {
-    ["L"]=2,
-    ["l"]=4,
-    ["ecart"]=3
+    ["L"]=3,
+    ["l"]=3,
+    ["ecart"]=4
 }
 
 function presanceWood()
@@ -101,18 +101,14 @@ function remplirInventaire()
 end
 function traiterArbre()
     local success, data = turtle.inspect()
-    if not turtle.detect() then
-        -- log.info("il n'y a rien")
-        plante()
-    end
     if presanceSapling() then
-        -- log.info("il y a une pousse d'arbre")
         fertilise()
     end
     if presanceWood() then
-        -- log.info("il y a un tronc d'arbre")
         couperArbre()
-        
+    end
+    if not turtle.detect() then
+        plante()
     end
 end
 function main()
@@ -126,15 +122,21 @@ function main()
     while true do
         remplirInventaire()
         move.remplirFuel()
-        print(champs["L"])
-        for i=1,champs["L"] do
-        --     for j=1,champs["l"] do
-                print("move.aller({[x]=",i*champs["ecart"],"})")
-                move.aller({["x"]=i*champs["ecart"]})
-                move.directionDevant()  
+        for i=0,champs["L"]-1 do
+            for j=0,champs["l"]-1 do
+                local tmpJ = j
+                if i%2 == 1 then
+                    log.display("impaire")
+                    tmpJ = (champs["l"]-1)-j
+                end
+                local nextArbre = {["x"]=i*champs["ecart"], ["z"]=tmpJ*champs["ecart"]}
+                log.display(nextArbre)
+                move.aller(nextArbre)
+                move.directionDevant() 
                 traiterArbre()
-        --     end
-        end      
+            end
+        end
+        move.allerDepart()  
         inventaire.viderInventaire()
     end
     log.sortieMethode()
