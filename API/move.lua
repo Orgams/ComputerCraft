@@ -60,9 +60,16 @@ function allerSurface()
   deplacementY(0)
   log.sortieMethode()
 end
-
+function allerDepart()
+  log.entreMethode("allerDepart()")
+  deplacementY(0)
+  deplacementZ(0)
+  deplacementX(0)
+  log.sortieMethode()
+end
 function aller(tab)
   log.entreMethode("aller(",tab,")")
+
   if tab[1] ~= nil then
     tab["x"] = tab[1]
   end
@@ -75,8 +82,11 @@ function aller(tab)
   if tab[4] ~= nil then
     tab["direction"] = tab[4]
   end
-  if tab["x"] ~= nil and tab["z"] ~= nil then
-    deplacementXZ(tab["x"], tab["z"])
+  if tab["x"] ~= nil then
+    deplacementX(tab["x"])
+  end
+  if tab["z"] ~= nil then
+    deplacementZ(tab["z"])
   end
   if tab["y"] ~= nil then
     deplacementY(tab["y"])
@@ -92,8 +102,11 @@ function retoure(tab)
   if tab["y"] ~= nil then
     deplacementY(tab["y"])
   end
-    if tab["x"] ~= nil and tab["z"] ~= nil then
-    deplacementXZ(tab["x"], tab["z"])
+  if tab["x"] ~= nil then
+    deplacementX(tab["x"])
+  end
+  if tab["z"] ~= nil then
+    deplacementZ(tab["z"])
   end
   if tab["direction"] ~= nil then
     direction(tab["direction"])
@@ -102,32 +115,35 @@ function retoure(tab)
 end
 
 function deplacementY(y)
-  log.entreMethode("deplacementY()")
-  while position["y"] > y do
+  log.entreMethode("deplacementY(",y,")")
+  while position["y"] < y do
     monter()
   end
-  while position["y"] < y do
+  while position["y"] > y do
     decendre()
   end
   log.sortieMethode()
 end
--- pour aller a des coordonnées précises
-function deplacementXZ(x,z)
-  log.entreMethode("deplacementXZ("..x..","..z..")")
 
+function deplacementX(x)
+  log.entreMethode("deplacementX(",x,")")
   while position["x"] < x do
     avancerDevant()
-  end
-  while position["z"] < z do
-    avancerDroite()
   end
   while position["x"] > x do
     avancerDerriere()
   end
+  log.sortieMethode()
+end
+
+function deplacementZ(z)
+  log.entreMethode("deplacementZ(",z,")")
+  while position["z"] < z do
+    avancerDroite()
+  end
   while position["z"] > z do
     avancerGauche()
   end
-
   log.sortieMethode()
 end
 
@@ -248,7 +264,7 @@ function decendre()
   end
 
   if(res)then
-    modifierPosition("y", position["y"]+1)
+    modifierPosition("y", position["y"]-1)
     remplirFuel()
   end
   log.sortieMethode(res)
@@ -265,7 +281,7 @@ function monter()
   while not turtle.up() do
     sleep(0.1)
   end
-  modifierPosition("y", position["y"]-1)
+  modifierPosition("y", position["y"]+1)
   remplirFuel()
   log.sortieMethode()
 end
