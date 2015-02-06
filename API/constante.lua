@@ -13,4 +13,18 @@ bloc = {
     ["rubberwood"] = "MineFactoryReloaded:rubberwood.log", ["MineFactoryReloaded:rubberwood.log"] = "rubberwood"
 }
 
-side = {"up","down","front","back","left","right"}
+side = {
+    "up",
+    "down",
+    "front",
+    "back",
+    "left",
+    "right"
+}
+
+direction ={
+  [0]="devant",["devant"]=0,
+  [1]="droite",["droite"]=1,
+  [2]="derriere",["derriere"]=2,
+  [3]="gauche",["gauche"]=3
+}

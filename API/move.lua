@@ -1,13 +1,6 @@
 os.loadAPI("API/api")
 api.initisalisation("log","inventaire", "constante","bloc","bdd")
 
-_direction ={
-  [0]="devant",["devant"]=0,
-  [1]="droite",["droite"]=1,
-  [2]="derriere",["derriere"]=2,
-  [3]="gauche",["gauche"]=3
-}
-
 local _blocUtilise = {
     ["Fuel"] = constante.bloc["coal"]
 }
@@ -160,25 +153,25 @@ end
 
 function directionDevant()
   log.entreMethode("directionDevant()")
-  direction(_direction["devant"])
+  direction(constante.direction["devant"])
   log.sortieMethode()
 end
 
 function directionDroite()
   log.entreMethode("directionDroite()")
-  direction(_direction["droite"])
+  direction(constante.direction["droite"])
   log.sortieMethode()
 end
 
 function directionDerriere()
   log.entreMethode("directionDerriere()")
-  direction(_direction["derriere"])
+  direction(constante.direction["derriere"])
   log.sortieMethode()
 end
 
 function directionGauche()
   log.entreMethode("directionGauche()")
-  direction(_direction["gauche"])
+  direction(constante.direction["gauche"])
   log.sortieMethode()
 end
 
@@ -303,7 +296,7 @@ end
 
 function descrPosition()
   --print(_direction[position["direction"]])
-  local desc = position["x"]..";"..position["z"]..";"..position["y"]..";".._direction[position["direction"]]
+  local desc = position["x"]..";"..position["z"]..";"..position["y"]..";"..constante.direction[position["direction"]]
   return desc
 end
 
