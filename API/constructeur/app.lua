@@ -1,14 +1,16 @@
 os.loadAPI("API/api")
-api.initisalisation("log","move")
-local longueur = 3
-local largeur = 3
+api.initisalisation("log","move","build","constante")
 
-function main()
-    print("coucou tous")
-    for i=1,longueur do
-        for j=1,largeur do
-            move.aller({i,j})
-            turtle.placeDown()
-        end
-    end
+log.setNomFichierLog("poseur.csv")
+log.supFichier()
+
+function main(pointD,pointF)
+    log.entreMethode("main(",pointD,",",pointF,")")
+    --print("nb bloc nécessaire : ", build.nbCube(pointD, pointF))
+    read()
+
+    build.construire("TubeZ", pointD, pointF)
+
+    move.aller({0,0,0})
+    log.sortieMethode()
 end

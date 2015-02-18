@@ -1,5 +1,5 @@
 os.loadAPI("API/api")
-api.initisalisation("log","inventaire", "constante","bloc","bdd")
+api.initisalisation("log","inventaire", "constante","bloc","bdd","tableau")
 
 local _blocUtilise = {
     ["Fuel"] = constante.bloc["coal"]
@@ -53,6 +53,7 @@ function allerSurface()
   deplacementY(0)
   log.sortieMethode()
 end
+
 function allerDepart()
   log.entreMethode("allerDepart()")
   deplacementY(0)
@@ -60,21 +61,12 @@ function allerDepart()
   deplacementX(0)
   log.sortieMethode()
 end
+
 function aller(tab)
   log.entreMethode("aller(",tab,")")
 
-  if tab[1] ~= nil then
-    tab["x"] = tab[1]
-  end
-  if tab[2] ~= nil then
-    tab["z"] = tab[2]
-  end
-  if tab[3] ~= nil then
-    tab["y"] = tab[3]
-  end
-  if tab[4] ~= nil then
-    tab["direction"] = tab[4]
-  end
+  tab = tableau.nommerEntre(tab, "x", "z", "y", "direction")
+
   if tab["x"] ~= nil then
     deplacementX(tab["x"])
   end
@@ -92,6 +84,9 @@ end
 
 function retoure(tab)
   log.entreMethode("retoure(",tab,")")
+
+  tab = tableau.nommerEntre(tab, "x", "z", "y", "direction")
+
   if tab["y"] ~= nil then
     deplacementY(tab["y"])
   end
@@ -258,8 +253,9 @@ function decendre()
 
   if(res)then
     modifierPosition("y", position["y"]-1)
-    remplirFuel()
   end
+
+  remplirFuel()
   log.sortieMethode(res)
   return res
 end
@@ -300,22 +296,36 @@ function descrPosition()
   return desc
 end
 
--- vérifie si on a assez de fuel (déplacements) en réserve.
-function remplirFuel()
-  log.entreMethode("remplirFuel()")
+function isFuelOk()
+  log.entreMethode("isFuelOk()")
+  local res = true
+
   -- 1 charbon = 96 move.deplacements
   -- On vérifie le niveau de fuel
   local niveauFuel = turtle.getFuelLevel()
 
   if (niveauFuel ~= "unlimited") then
     if (niveauFuel < niveauFuelMini) then
-      -- On a besoin de faire le plein
-      inventaire.selectFirstSlot(_blocUtilise["Fuel"])
-      turtle.refuel(1) -- on recharge pour 96 move.deplacements
-      -- et on vérifie si il nous reste assez de charbon
-      rechargerCharbon()
+      log.warn("le fuel est bas")
+      res = false
     end
   end
+  log.sortieMethode(res)
+  return res
+end
+
+function remplirFuel()
+  log.entreMethode("remplirFuel()")
+
+  if not isFuelOk() then
+    inventaire.selectFirstSlot(_blocUtilise["Fuel"])
+    turtle.refuel(1) 
+
+    -- on recharge pour 96 move.deplacements
+    -- et on vérifie si il nous reste assez de charbon
+    rechargerCharbon()
+  end
+
   log.sortieMethode()
 end
 

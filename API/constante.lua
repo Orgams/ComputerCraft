@@ -8,18 +8,20 @@ bloc = {
     ["coal"] = "minecraft:coal", ["minecraft:coal"] = "coal",
     ["chest"] = "minecraft:chest", ["minecraft:chest"] = "chest",
     ["bois"] = "minecraft:log", ["minecraft:log"] = "bois",
+    ["planche"] = "minecraft:planks", ["minecraft:planks"] = "planche",
     ["sapling"] = "minecraft:sapling", ["minecraft:sapling"] = "sapling",
     ["rubbersapling"] = "MineFactoryReloaded:rubberwood.sapling", ["MineFactoryReloaded:rubberwood.sapling"] = "rubbersapling",
     ["rubberwood"] = "MineFactoryReloaded:rubberwood.log", ["MineFactoryReloaded:rubberwood.log"] = "rubberwood"
 }
 
 side = {
-    "up",
-    "down",
-    "front",
-    "back",
-    "left",
-    "right"
+    [1] = "down", ["down"] = 1,
+    [2] = "front", ["front"] = 2,
+    [3] = "back", ["back"] = 3,
+    [4] = "left", ["left"] = 4,
+    [5] = "right", ["right"] =5,
+    [6] = "up", ["up"] = 6
+
 }
 
 direction ={

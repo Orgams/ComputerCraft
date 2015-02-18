@@ -126,11 +126,9 @@ function main()
             for j=0,champs["l"]-1 do
                 local tmpJ = j
                 if i%2 == 1 then
-                    log.display("impaire")
                     tmpJ = (champs["l"]-1)-j
                 end
                 local nextArbre = {["x"]=i*champs["ecart"], ["z"]=tmpJ*champs["ecart"]}
-                log.display(nextArbre)
                 move.aller(nextArbre)
                 move.directionDevant() 
                 traiterArbre()
