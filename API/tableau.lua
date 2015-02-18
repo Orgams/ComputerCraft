@@ -42,13 +42,14 @@ function clone(tab)
     return res
 end
 
-function nommerEntre(tab, ...)
-    log.entreMethode("nommerEntre(", tab, ", ", arg, ")")
+function nommerEntre(tab, keys)
+    log.entreMethode("nommerEntre(", tab, ", ", keys, ")")
     local tabTmp = clone(tab)
     local i = 1
-    for _, nom in ipairs(arg) do
-        if tabTmp[nom] == nil and tabTmp[i] ~= nil then
-            tabTmp[nom] = tabTmp[i]
+    for numKey, key in pairs(keys) do
+        if tabTmp[key] == nil and tabTmp[i] ~= nil then
+            tabTmp[key] = tabTmp[i]
+            tabTmp[numKey] = nil
         end
         i = i + 1
     end
@@ -56,13 +57,13 @@ function nommerEntre(tab, ...)
     return tabTmp
 end
 
-function mettreA(tab, valeur,...)
-    log.entreMethode("mettreA(", tab, ", ", valeur, ", ", arg, ")")
+function mettreA(tab, valeur, keys)
+    log.entreMethode("mettreA(", tab, ", ", valeur, ", ", keys, ")")
     local tabTmp = clone(tab)
 
-    for _, nom in ipairs(arg) do
-        if tabTmp[nom] == nil then
-            tabTmp[nom] = valeur
+    for _, key in pairs(keys) do
+        if tabTmp[key] == nil then
+            tabTmp[key] = valeur
         end
     end
     log.sortieMethode(tabTmp)

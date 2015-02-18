@@ -130,7 +130,8 @@ function main()
                 end
                 local nextArbre = {["x"]=i*champs["ecart"], ["z"]=tmpJ*champs["ecart"]}
                 move.aller(nextArbre)
-                move.directionDevant() 
+                move.directionDevant()
+                turtle.suck()
                 traiterArbre()
             end
         end

@@ -1,14 +1,11 @@
 os.loadAPI("API/api")
-api.initisalisation("log","constante")
+api.initisalisation("log","constante","parametre")
 
 function construire(forme,posDepart, posFin, face)
     log.entreMethode("construireFaceCube(", forme, ", ", posDepart, ", ", posFin, ", ", face, ")")
 
-    posDepart = tableau.nommerEntre(posDepart, "x", "z", "y")
-    posFin = tableau.nommerEntre(posFin, "x", "z", "y")
-
-    posDepart = tableau.mettreA(posDepart, 0, "x", "z", "y")
-    posFin = tableau.mettreA(posFin, 0, "x", "z", "y")
+    parametre.prepareParamPosition(posDepart)
+    parametre.prepareParamPosition(posFin)
 
     log.entreMethode("construire(", posDepart, ", ", posFin, ")")
     if forme == "Cube" then
@@ -97,10 +94,9 @@ end
 
 function nbCube(posDepart, posFin)
     log.entreMethode("nbCube(", posDepart, ", ", posFin, ")")
-    posDepart = tableau.nommerEntre(posDepart, "x", "z", "y")
-    posFin = tableau.nommerEntre(posFin, "x", "z", "y")
-    posDepart = tableau.mettreA(posDepart, 0, "x", "z", "y")
-    posFin = tableau.mettreA(posFin, 0, "x", "z", "y")
+    
+    parametre.prepareParamPosition(posDepart)
+    parametre.prepareParamPosition(posFin)
 
     nbBlocY = math.abs(posDepart["y"]-posFin["y"]) + 1
     nbBlocX = math.abs(posDepart["x"]-posFin["x"]) + 1
