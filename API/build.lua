@@ -12,9 +12,6 @@ function construire(forme, cube, ...)
     if forme == "FaceCube" then
         construireFaceCube(cube, arg[1])
     end
-    if forme == "TubeZ" then
-        construireTubeZ(cube)
-    end
     if forme == "CubeVide" then
         construireCubeVide(cube)
     end
@@ -33,15 +30,6 @@ function construireCubeVide(cube)
     log.display(listeConstruction)
     for k,v in pairs(listeConstruction) do
         construireCube(v)
-    end
-    log.sortieMethode()
-end
-
-function construireTubeZ(cube)
-    log.entreMethode("construireTubeZ(",cube,")")
-    --construire bas devant derriere
-    for _,i in pairs({1,2,3,6}) do
-        construireFaceCube(cube, i)
     end
     log.sortieMethode()
 end
@@ -126,8 +114,6 @@ function construireCube(cube)
     end
     log.sortieMethode()
 end
-
-
 
 function nbCube(posDepart, posFin)
     log.entreMethode("nbCube(", posDepart, ", ", posFin, ")")
