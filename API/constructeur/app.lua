@@ -4,12 +4,11 @@ api.initisalisation("log","move","build","constante")
 log.setNomFichierLog("poseur.csv")
 log.supFichier()
 
-function main(pointD,pointF)
-    log.entreMethode("main(",pointD,",",pointF,")")
-    --print("nb bloc nécessaire : ", build.nbCube(pointD, pointF))
+function main(cube)
+    log.entreMethode("main(",cube,")")
     read()
 
-    build.construire("TubeZ", pointD, pointF)
+    build.construire("CubeVide", cube)
 
     move.aller({0,0,0})
     log.sortieMethode()

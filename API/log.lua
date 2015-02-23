@@ -95,6 +95,9 @@ function sortieMethode(...)
     profondeur = profondeur - 1
 end
 
+function modifParam(...)
+    debug(concat(arg))
+end
 function setNomFichierLog (chemin)
     _chemin = chemin
 end

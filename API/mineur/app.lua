@@ -89,19 +89,15 @@ end
 
 function main()
   log.entreMethode("main()")
-  log.display(puit)
   init()
-  log.display(puit)
   move.retoure(move.getPositionDepart())
   print("Mineur en attente")
   bdd.sauver({["action"]="preparation"}, os.getComputerID())
   if not autostat then
     read()
   end
-  log.display(puit)
   move.rechargerCharbon()
   recupNextPuit()
-  log.display(puit)
   while puit do
     creuserPuit()
   end

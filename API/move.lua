@@ -65,7 +65,7 @@ end
 function aller(tab)
   log.entreMethode("aller(",tab,")")
 
-  tab = tableau.nommerEntre(tab, "x", "z", "y", "direction")
+  tab = tableau.nommerEntre(tab, {"x", "z", "y"}, "direction")
 
   if tab["x"] ~= nil then
     deplacementX(tab["x"])
@@ -85,7 +85,7 @@ end
 function retoure(tab)
   log.entreMethode("retoure(",tab,")")
 
-  tab = tableau.nommerEntre(tab, "x", "z", "y", "direction")
+  tab = tableau.nommerEntre(tab, {"x", "z", "y"}, "direction")
 
   if tab["y"] ~= nil then
     deplacementY(tab["y"])

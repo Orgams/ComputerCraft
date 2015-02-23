@@ -31,6 +31,7 @@ function isTable(tab)
 end
 
 function clone(tab)
+    log.entreMethode("clone(", tab, ")")
     local res = {}
     for k,v in pairs(tab) do
         val = v
@@ -39,35 +40,33 @@ function clone(tab)
         end
         res[k] = val;
     end
+    log.sortieMethode(res)
     return res
 end
 
 function nommerEntre(tab, keys)
     log.entreMethode("nommerEntre(", tab, ", ", keys, ")")
-    local tabTmp = clone(tab)
     local i = 1
     for numKey, key in pairs(keys) do
-        if tabTmp[key] == nil and tabTmp[i] ~= nil then
-            tabTmp[key] = tabTmp[i]
-            tabTmp[numKey] = nil
+        if tab[key] == nil and tab[i] ~= nil then
+            tab[key] = tab[i]
+            tab[numKey] = nil
         end
         i = i + 1
     end
-    log.sortieMethode(tabTmp)
-    return tabTmp
+    log.sortieMethode(tab)
+    return tab
 end
 
 function mettreA(tab, valeur, keys)
     log.entreMethode("mettreA(", tab, ", ", valeur, ", ", keys, ")")
-    local tabTmp = clone(tab)
-
     for _, key in pairs(keys) do
-        if tabTmp[key] == nil then
-            tabTmp[key] = valeur
+        if tab[key] == nil then
+            tab[key] = valeur
         end
     end
-    log.sortieMethode(tabTmp)
-    return tabTmp
+    log.sortieMethode(tab)
+    return tab
 end
 
 function liste(debut, fin, croissant)
