@@ -1,6 +1,8 @@
 os.loadAPI("API/api")
 api.initisalisation("log","constante","parametre")
 
+local materielCourant = nil
+
 function construire(forme, cube, ...)
     log.entreMethode("construire(", forme, ", ", cube, ", ", arg, ")")
 
@@ -10,7 +12,7 @@ function construire(forme, cube, ...)
         construireCube(cube)
     end
     if forme == "FaceCube" then
-        construireFaceCube(cube, arg[1])
+        construireCube(getFaceCube(cube, arg[1]))
     end
     if forme == "CubeVide" then
         construireCubeVide(cube)
@@ -88,14 +90,6 @@ function getFaceCube(cube, face)
     return cubeTmp
 end
 
-function construireFaceCube(cube, face)
-    log.entreMethode("construireFaceCube(", cube, ", ", face, ")")
-
-    construireCube(getFaceCube(cube, face))
-
-    log.sortieMethode()
-end
-
 function construireCube(cube)
     log.entreMethode("construireCube(", cube, ")")
 
@@ -113,6 +107,10 @@ function construireCube(cube)
         end
     end
     log.sortieMethode()
+end
+
+function poserEnBas ()
+
 end
 
 function nbCube(posDepart, posFin)
