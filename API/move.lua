@@ -82,6 +82,7 @@ function aller(tab)
   if tab[4] ~= nil then
     tab["direction"] = tab[4]
   end
+
   if tab["x"] ~= nil then
     deplacementX(tab["x"])
   end
@@ -94,9 +95,28 @@ function aller(tab)
   if tab["direction"] ~= nil then
     direction(tab["direction"])
   end
+
+  isOK = true;
+  if tab["x"] ~= nil and tab["x"] ~= position["x"] then
+    isOK = false
+  end
+  if tab["z"] ~= nil and tab["z"] ~= position["z"] then
+    isOK = false
+  end
+  if tab["y"] ~= nil and tab["y"] ~= position["y"] then
+    isOK = false
+  end
+  if tab["direction"] ~= nil and tab["direction"] ~= position["direction"] then
+    isOK = false
+  end
+
+  if not isOK then
+    log.warn("aller is not ok")
+    aller(tab)
+  end
+
   log.sortieMethode()
 end
-
 function retoure(tab)
   log.entreMethode("retoure(",tab,")")
   if tab["y"] ~= nil then
@@ -295,8 +315,8 @@ function eviterBlocDevant()
   log.entreMethode("eviterBlocDevant()")
   monter()
   avancer()
-  avancer()
-  decendre()
+  --avancer()
+  --decendre()
   remplirFuel()
   log.sortieMethode()
 end

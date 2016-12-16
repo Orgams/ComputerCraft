@@ -96,6 +96,28 @@ function nb(id)
     return res
 end
 
+function nb()
+    log.entreMethode("nb()")
+    local res = 0
+    for i=1,16 do
+        res = res + turtle.getItemCount(i)
+    end
+    log.sortieMethode(res)
+    return res
+end
+
+function getMaxItem()
+    log.entreMethode("getMaxItem")
+    nbItemCourant = nb()
+    nbItemOld = -1
+    while nbItemOld ~= nbItemCourant do
+        nbItemOld = nbItemCourant
+        coffre.getItem()
+        nbItemCourant = nb()
+    end
+    log.sortieMethode(res)
+end
+
 function ranger()
     log.entreMethode("ranger()")
 
