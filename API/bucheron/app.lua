@@ -4,7 +4,11 @@ api.initisalisation("log","move","inventaire","constante","coffre","bloc")
 log.setNomFichierLog("bucheron.csv")
 log.supFichier()
 
-move.setBlocPasCasse({constante.bloc["chest"], constante.bloc["bois"]})
+move.setBlocPasCasse({
+    constante.bloc["chest"], 
+    constante.bloc["bois"], 
+    constante.bloc["sapling"]
+})
 move.init()
 
 local _directionCoffreEntre = "Left"
@@ -18,7 +22,13 @@ local _blocUtilise = {
 
 inventaire.setBlocAGarder({_blocUtilise["Sapling"],_blocUtilise["Fertilisant"],_blocUtilise["Fuel"]})
 
-local autostat = true
+local autostat = false
+
+local champs = {
+    ["L"]=3,
+    ["l"]=3,
+    ["ecart"]=4
+}
 
 function presanceWood()
     log.entreMethode("presanceWood()")
@@ -89,7 +99,18 @@ function remplirInventaire()
     inventaire.viderSurplus()
     log.sortieMethode()
 end
-
+function traiterArbre()
+    local success, data = turtle.inspect()
+    if presanceSapling() then
+        fertilise()
+    end
+    if presanceWood() then
+        couperArbre()
+    end
+    if not turtle.detect() then
+        plante()
+    end
+end
 function main()
     log.entreMethode("main()")
     print("J'ai besoin de sapling et de fuel.")
@@ -97,27 +118,26 @@ function main()
     if not autostat then
         read()
     end
-    remplirInventaire()
-    move.remplirFuel()
+
     while true do
-        move.directionDevant()
-        local success, data = turtle.inspect()
-        if presanceSapling() then
-            log.info("il y a une pousse d'arbre")
-            fertilise()
+        remplirInventaire()
+        move.remplirFuel()
+        for i=0,champs["L"]-1 do
+            for j=0,champs["l"]-1 do
+                local tmpJ = j
+                if i%2 == 1 then
+                    log.display("impaire")
+                    tmpJ = (champs["l"]-1)-j
+                end
+                local nextArbre = {["x"]=i*champs["ecart"], ["z"]=tmpJ*champs["ecart"]}
+                log.display(nextArbre)
+                move.aller(nextArbre)
+                move.directionDevant() 
+                traiterArbre()
+            end
         end
-        if presanceWood() then
-            log.info("il y a un tronc d'arbre")
-            couperArbre()
-            inventaire.viderInventaire()
-            remplirInventaire()
-            move.directionDevant()
-        end
-        if not turtle.detect() then
-            log.info("il n'y a rien")
-            plante()
-        end
-        sleep(10)
+        move.allerDepart()  
+        inventaire.viderInventaire()
     end
     log.sortieMethode()
 end

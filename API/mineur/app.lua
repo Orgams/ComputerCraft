@@ -4,7 +4,7 @@ api.initisalisation("log","move","bloc","inventaire", "comm","bdd","mineur/mineu
 log.setNomFichierLog("mineur.csv")
 log.supFichier()
 
-move.setBlocPasCasse({constante.bloc["chest"]})
+move.setBlocPasCasse({constante.bloc["chest"], constante.bloc["enderchest"]})
 move.init()
 
 inventaire.setBlocAGarder({constante.bloc["coal"]})
@@ -14,13 +14,14 @@ comm.connecter()
 local _blocNonMine = {
   constante.bloc["grass"],
   constante.bloc["stone"],
+  constante.bloc["cobblestone"],
   constante.bloc["dirt"],
-  constante.bloc["gravel"]
+  constante.bloc["gravel"],
 }
 
 local puit
 
-local autostat = true
+local autostat = false
 
 function compare_mine()
   log.entreMethode("compare_mine()")

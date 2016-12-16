@@ -4,7 +4,9 @@ api.initisalisation("log")
 local positionNextPuit = {["x"]=0,["z"]=0}
 
 function setPositionNextPuit(tab)
+  log.entreMethode("setPositionNextPuit(",tab,")")
   positionNextPuit = tableau.clone(tab)
+  log.sortieMethode()
 end
 
 function nextPuit()

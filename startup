@@ -1,0 +1,4 @@
+os.loadAPI("API/api")
+api.initisalisation("mineur/app")
+
+app.main()

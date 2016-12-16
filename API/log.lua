@@ -21,6 +21,9 @@ local _niveauUtilise = {["fichier"]=_niveau["debug"],
 
 profondeur = 0
 function concat(tab)
+    if tab == nil then
+        return nil
+    end
     local res = ""
     for key,value in ipairs(tab) do
         local val = value
