@@ -25,8 +25,8 @@ inventaire.setBlocAGarder({_blocUtilise["Sapling"],_blocUtilise["Fertilisant"],_
 local autostat = false
 
 local champs = {
-    ["L"]=3,
-    ["l"]=3,
+    ["L"]=6,
+    ["l"]=6,
     ["ecart"]=4
 }
 
